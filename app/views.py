@@ -7,7 +7,7 @@ This file creates your application.
 
 from app import app
 from flask import render_template, request
-
+from app.forms import UploadForm
 ###
 # Routing for your application.
 ###
@@ -28,6 +28,16 @@ def index(path):
     """
     return render_template('index.html')
 
+@app.route('/api/upload')
+def upload():
+    form = UploadForm()
+    upload = [{"message": "File Upload Successful","filename": "you-uploaded-file.jpg","description": "Some description for your image"}]
+    if form.validate_on_submit() and request.method == 'POST':
+        file = request.files['upload']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+        return jsonify(upload=upload)
+    return jsonify(form_errors())
 
 # Here we define a function to collect form errors from Flask-WTF
 # which we can later use
