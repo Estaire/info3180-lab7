@@ -37,9 +37,8 @@ def upload():
         file = request.files['photo']
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-        upload = [{"message": "File Upload Successful","filename": filename,"description": request.form["description"]}]
-        return jsonify(upload=upload)
-    return jsonify(form_errors(form))
+        return jsonify(response={"message": "File Upload Successful","filename": filename,"description": request.form["description"]})
+    return jsonify(response=form_errors(form))
 
 # Here we define a function to collect form errors from Flask-WTF
 # which we can later use
@@ -53,7 +52,6 @@ def form_errors(form):
                     error
                 )
             error_messages.append(message)
-
     return error_messages
 
 

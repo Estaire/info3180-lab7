@@ -56,19 +56,34 @@ const NotFound = Vue.component('not-found', {
 
 const UploadForm = Vue.component('upload-form', {
     template: `
-    <form @submit.prevent="uploadPhoto" id="uploadForm" role="form" method="POST">
+    <form @submit.prevent="uploadPhoto" id="uploadForm" role="form" method="POST" name="form">
+        <div v-if="errors == 0" class="yes">
+          <p> {{response.message}} </p>
+        </div>
+        <div v-else-if="errors == 1" class="no">
+          <p v-for="error in response" > {{error}} </p>
+        </div>
         <label for="description">Description</label>
         <textarea id="description" name="description" rows="4" cols="50"></textarea>
-        <label for="photo">Photo Upload</label>
+        <label for="pllabel">Photo Upload</label>
+        <label for="photo" class="plabel" name="pllabel">Browse...</label>
         <input type="file" name="photo"  id="photo" class="form-control mb-2 mr-sm-2">
-        <button  class="btn btn-primary mb-2" @click="uploadPhoto">Upload</button>
+        <button  class="btn btn-primary mb-2">Submit</button>
     </form>
     `,
+    data: ()=>{
+      return{
+        response: [],
+        errors: 0 
+      }
+    },
     methods: {
       uploadPhoto: function(){
         let self = this;
         let uploadForm = document.getElementById('uploadForm');
         let form_data = new FormData(uploadForm);
+        let description = document.forms["form"]["description"].value;
+        let photo = document.forms["form"]["photo"].value;
         fetch("/api/upload", {
           method: "POST",
           body: form_data,
@@ -81,10 +96,12 @@ const UploadForm = Vue.component('upload-form', {
           return response.json();
         })
         .then(function(jsonResponse){
+          self.response = jsonResponse.response;
+          if(description == "" || photo == null)
+            self.errors = 1;
+          else
+            self.errors = 0;
           console.log(jsonResponse);
-        })
-        .catch(function(error){
-          console.log(error);
         });
       }
     }

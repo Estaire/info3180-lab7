@@ -1,3 +1,58 @@
 body {
     padding-top: 5rem;
 }
+
+form{
+	display: grid;
+	grid-gap: 5px;
+}
+
+form textarea{
+	border-color: lightgray;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 1rem;
+}
+
+form input[type="file"]{
+	display: none;
+}
+
+form .plabel{
+	border: 1px solid lightgrey;
+	border-radius: 5px;
+	font-weight: bold;
+	padding: 0px 10px;
+	width: 6rem; 
+}
+
+form button{
+	width: 5rem;
+}
+
+.no{
+	background-color: rgb(250,223,225);
+	border: 1px solid rgb(250,223,225);
+	border-radius: 5px;
+	padding: 10px 70px;
+}
+
+.no p{
+	color: rgb(157,81,82);
+	display: list-item;
+    font-weight: bold;
+    margin: 0;
+}
+
+.yes{
+	background-color: rgb(220,240,225);
+	border: 1px solid rgb(220,240,225);
+	border-radius: 5px;
+	padding: 5px 20px;
+}
+
+.yes p{
+	color:rgb(94,140,103);
+    font-weight: bold;
+    margin: 0;
+}
